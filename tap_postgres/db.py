@@ -159,6 +159,11 @@ def selected_value_to_singer_value_impl(elem, sql_datatype):
             cleaned_elem = elem
         else:
             raise Exception(f"do not know how to marshall a dict if its not an hstore or json: {sql_datatype}")
+    elif isinstance(elem, datetime.timedelta):
+        if elem.is_nan():
+            cleaned_elem = None
+        else:
+            cleaned_elem = str(elem)
     else:
         raise Exception(
             f"do not know how to marshall value of class( {elem.__class__} ) and sql_datatype ( {sql_datatype} )")
